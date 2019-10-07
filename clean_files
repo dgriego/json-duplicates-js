@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+const fs = require('fs');
+
+// remove valid lead files
+fs
+  .readdirSync('./')
+  .filter(fn => fn.startsWith('valid-leads-'))
+  .forEach(file => {
+    fs.unlinkSync(file);
+  });
+
+// clear change log
+fs.writeFileSync('change_log.txt', '', 'utf-8');

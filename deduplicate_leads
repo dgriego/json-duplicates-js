@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+const LeadCollection = require('./LeadCollection.js');
+
+const LEADS_FILE = 'leads.json';
+const leadCollection = new LeadCollection();
+const leads = LeadCollection.parseJsonFromLeadsFile(LEADS_FILE);
+
+leadCollection.initializeLeadsAsLeadObjects(leads);
+
+leadCollection.sortedByDateDesc().forEach(lead => {
+  const result = leadCollection.storeLeadIfValid(lead);
+
+  if (!result.success) {
+    let validLead = result.existingLead;
+    validLead.compareAndStoreChangesAgainst(lead);
+    leadCollection.updateDuplicateCounts(validLead);
+  }
+});
+
+leadCollection.outputChangeLogFileInfo();
+leadCollection.outputSummaryToCli();
+leadCollection.updateChangeLog();
+fileName = leadCollection.createValidLeadsFile();
+leadCollection.outputValidLeadsFilePath(fileName);
