@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest"
   },
+  "engines" : { "node" : ">=10.16.3" },
   "keywords": [],
   "author": "",
   "license": "ISC",
