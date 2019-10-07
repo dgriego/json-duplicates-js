@@ -20,8 +20,8 @@ const deduplicateTestLeads = function() {
 }.bind(this);
 
 beforeAll(() => {
-  this.change_log_fixture_file = 'tests/change_log_fixture.txt';
-  this.change_log_file = 'tests/change_log.txt';
+  this.changeLogFixtureFile = 'tests/change_log_fixture.txt';
+  this.changeLogFile = 'tests/change_log.txt';
   this.leads_file = 'tests/leads_fixture.json';
   this.leadsFromFile = LeadCollection.parseJsonFromLeadsFile(this.leads_file);
   this.leadA = new Lead(this.leadsFromFile[0]);
@@ -39,10 +39,10 @@ test('all leads array should be populated from file', () => {
 test('all leads sorted by date', () => {
   const leadCollection = new LeadCollection();
   leadCollection.initializeLeadsAsLeadObjects(this.leadsFromFile);
-  const all_by_date = leadCollection.sortedByDateDesc();
+  const allByDate = leadCollection.sortedByDateDesc();
 
-  expect(all_by_date[0].entryDate).toBe(this.leadA.entryDate);
-  expect(all_by_date[all_by_date.length - 1].entryDate).toBe(
+  expect(allByDate[0].entryDate).toBe(this.leadA.entryDate);
+  expect(allByDate[allByDate.length - 1].entryDate).toBe(
     this.leadB.entryDate
   );
 });
@@ -116,27 +116,27 @@ test('duplicate counts increase', () => {
   lead.compareAndStoreChangesAgainst(lead);
   leadCollection.updateDuplicateCounts(lead);
 
-  expect(leadCollection.duplicates_by_id_count).toEqual(1);
-  expect(leadCollection.duplicates_by_email_count).toEqual(1);
+  expect(leadCollection.duplicatesByIdCount).toEqual(1);
+  expect(leadCollection.duplicatesByEmailCount).toEqual(1);
 });
 
 test('summary is accurate', () => {
   const leadCollection = deduplicateTestLeads();
 
   const summary = leadCollection.summary();
-  expect(summary.all_count).toEqual(6);
-  expect(summary.valid_count).toEqual(4);
-  expect(summary.duplicates_by_email_count).toEqual(2);
-  expect(summary.duplicates_by_id_count).toEqual(1);
-  expect(summary.removed_count).toEqual(2);
+  expect(summary.allCount).toEqual(6);
+  expect(summary.validCount).toEqual(4);
+  expect(summary.duplicatesByEmailCount).toEqual(2);
+  expect(summary.duplicatesByIdCount).toEqual(1);
+  expect(summary.removedCount).toEqual(2);
 });
 
 test('change log is accurate', () => {
   const leadCollection = deduplicateTestLeads();
 
-  leadCollection.updateChangeLog(this.change_log_file);
+  leadCollection.updateChangeLog(this.changeLogFile);
 
-  const testChangeLog = fs.readFileSync(this.change_log_file, 'utf-8');
+  const testChangeLog = fs.readFileSync(this.changeLogFile, 'utf-8');
   const indexOfUpdatedHeader = testChangeLog.indexOf('-- [LEAD UPDATED]');
   const changeLogStr = testChangeLog.slice(
     indexOfUpdatedHeader,
@@ -144,13 +144,13 @@ test('change log is accurate', () => {
   );
 
   const changeLogFixture = fs.readFileSync(
-    this.change_log_fixture_file,
+    this.changeLogFixtureFile,
     'utf-8'
   );
 
   expect(changeLogStr).toEqual(changeLogFixture);
 
-  fs.writeFileSync(this.change_log_file, '', 'utf-8');
+  fs.writeFileSync(this.changeLogFile, '', 'utf-8');
 });
 
 test('change valid leads file is accurate', () => {

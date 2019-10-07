@@ -114,6 +114,8 @@ class LeadCollection {
         fs.appendFileSync(file, lead.fieldChangesStr());
       }
     });
+
+    fs.appendFileSync(file, this.summaryMsgArr().join(''));
   }
 
   outputChangeLogFileInfo() {

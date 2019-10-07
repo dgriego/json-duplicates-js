@@ -29,3 +29,12 @@ LEAD:
 }
 FIELD CHANGES:
 - entryDate field changed from "2014-04-07T17:32:20+00:00" to  "2014-05-07T17:32:20+00:00".
+
+[SUMMARY]
+-----------------------------------------------
+Total potential leads: 6
+Total valid leads: 4
+Duplicate leads by email: 2
+Duplicate leads by id: 1
+Leads removed: 2
+-----------------------------------------------
